@@ -3,11 +3,9 @@ from flask_migrate import Migrate
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_security.utils import encrypt_password
 from flask_admin import helpers as admin_helpers
-import flask_admin
+from adminlte.admin import AdminLte
 
 from flask_admin import menu
-
-from util.gravatar import gravatar_image_url
 
 from models import db
 from models.role import Role
@@ -29,17 +27,20 @@ migrate = Migrate(app, db)
 user_store = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_store)
 
-admin = flask_admin.Admin(app, name = 'FlaskCMS', template_mode = 'bootstrap3')
+admin = AdminLte(app, template_mode = 'bootstrap3', name = 'FlaskCMS', skin = 'green',
+                 short_name = "<b>F</b>C", long_name = "<b>Flask</b>CMS",
+                 category_icon_classes = {'User': 'fa fa-users', 'Author': 'fa fa-address-card'})
 
-admin.add_view(RoleView(Role, db.session, menu_icon_type = 'fa', menu_icon_value = 'fa-server', name = "Roles", category = 'Users'))
-admin.add_view(UserView(User, db.session, menu_icon_type = 'fa', menu_icon_value = 'fa-users', name = "Users", category = 'Users'))
-admin.add_view(MessageView(Message, db.session, menu_icon_type = 'fa', menu_icon_value = 'fa-envelope', name = "Messages"))
-admin.add_view(DeviceView(Device, db.session, menu_icon_type = 'fa', menu_icon_value = 'fa-laptop', name = "Devices"))
+admin.add_view(RoleView(Role, db.session, name = "Roles", category = 'Users', menu_icon_value = 'fa-server', menu_icon_type = 'fa'))
+admin.add_view(UserView(User, db.session, name = "Users", category = 'Users', menu_icon_value = 'fa-users', menu_icon_type = 'fa'))
+admin.add_view(MessageView(Message, db.session, name = "Messages", menu_icon_value = 'fa-envelope', menu_icon_type = 'fa'))
+admin.add_view(DeviceView(Device, db.session, name = "Devices", menu_icon_value = 'fa-laptop', menu_icon_type = 'fa'))
 
-admin.add_link(menu.MenuLink(name='Website', url='http://tomasznajda.com', target = "_blank", category='Author'))
-admin.add_link(menu.MenuLink(name='GitHub', url='https://github.com/tomasznajda', target = "_blank", category='Author'))
+admin.add_link(menu.MenuLink(name='Website', category='Author', url='http://tomasznajda.com', icon_value = 'fa-globe',icon_type = 'fa', target = "_blank", ))
+admin.add_link(menu.MenuLink(name='GitHub', category='Author', url='https://github.com/tomasznajda', icon_value = 'fa-github', icon_type = 'fa', target = "_blank", ))
 
-app.jinja_env.globals.update(gravatar_image_url = gravatar_image_url)
+admin.set_category_icon(name='Users', icon_type = 'fa', icon_value = 'fa-users')
+admin.set_category_icon(name='Author', icon_type = 'fa', icon_value = 'fa-address-card')
 
 
 @security.context_processor
