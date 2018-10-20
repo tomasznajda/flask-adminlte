@@ -1,0 +1,28 @@
+{% macro render_field_with_errors(field, icon_class) %}
+    <div class="{% if field.errors %}has-error{% endif %}">
+        <div class="form-group input-group">
+            <span class="input-group-addon"><i class="{{ icon_class }}"></i></span>
+            {{ field(placeholder=field.label.text, class_='form-control', **kwargs)|safe }}
+        </div>
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro render_checkbox_field(field) -%}
+    <div class="icheck">
+        {{ field(type='checkbox', **kwargs) }}
+        <label> {{ field.label }}</label>
+    </div>
+{%- endmacro %}
+
+{% macro render_button(field) %}
+    {{ field(class_='form-control', **kwargs)|safe }}
+{% endmacro %}
+
+{% macro render_field(field) %}
+    <p>{{ field(class_='form-control', **kwargs)|safe }}</p>
+{% endmacro %}

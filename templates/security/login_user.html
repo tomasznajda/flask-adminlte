@@ -1,0 +1,42 @@
+{% extends 'admin/master.html' %}
+{% from "security/_macros.html" import render_field, render_field_with_errors, render_checkbox_field, render_button %}
+{% include "security/_messages.html" %}
+{% block head %}
+    <style>
+        body {
+            background: #d2d6de;
+        }
+    </style>
+{% endblock head %}
+{% block page_body %}
+    <div class="login-box">
+        <div class="login-logo">
+            {% autoescape false %}{{ admin_view.admin.long_name }}{% endautoescape %}
+        </div>
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in</p>
+            <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+                {{ login_user_form.hidden_tag() }}
+                {{ render_field_with_errors(login_user_form.email, 'fa fa-at') }}
+                {{ render_field_with_errors(login_user_form.password, 'fa fa-lock') }}
+                {{ render_field(login_user_form.next) }}
+                <div class="row">
+                    <div class="col-xs-8">
+                        {{ render_checkbox_field(login_user_form.remember) }}
+                    </div>
+                    <div class="col-xs-4">
+                        {{ render_button(login_user_form.submit, class="btn btn-primary btn-block btn-flat") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p class="text-center" style="margin-top: 15px;">
+            {% if security.recoverable %}
+                <a href="{{ url_for('security.forgot_password') }}">I forgot my password</a><br>
+            {% endif %}
+            {% if security.registerable %}
+                <a href="{{ url_for('security.register') }}">Register a new account</a>
+            {% endif %}
+        </p>
+    </div>
+{% endblock page_body %}

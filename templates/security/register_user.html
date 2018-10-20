@@ -1,0 +1,36 @@
+{% extends 'admin/master.html' %}
+{% from "security/_macros.html" import render_field_with_errors, render_field, render_button %}
+{% include "security/_messages.html" %}
+{% block head %}
+    <style>
+        body {
+            background: #d2d6de;
+        }
+    </style>
+{% endblock head %}
+{% block page_body %}
+    <div class="register-box">
+        <div class="register-logo">
+            {% autoescape false %}{{ admin_view.admin.long_name }}{% endautoescape %}
+        </div>
+        <div class="register-box-body">
+            <p class="register-box-msg">Sign up</p>
+            <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
+                {{ register_user_form.hidden_tag() }}
+                {{ render_field_with_errors(register_user_form.email, 'fa fa-at') }}
+                {{ render_field_with_errors(register_user_form.password, 'fa fa-lock') }}
+                {% if register_user_form.password_confirm %}
+                    {{ render_field_with_errors(register_user_form.password_confirm, 'fa fa-lock') }}
+                {% endif %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{ render_button(register_user_form.submit, class="btn btn-primary btn-block btn-flat") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p class="text-center" style="margin-top: 15px;">
+            <a href="{{ url_for('security.login') }}">I already have an account</a>
+        </p>
+    </div>
+{% endblock page_body %}
