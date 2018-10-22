@@ -27,9 +27,8 @@ migrate = Migrate(app, db)
 user_store = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_store)
 
-admin = AdminLte(app, template_mode = 'bootstrap3', name = 'FlaskCMS', skin = 'green',
-                 short_name = "<b>F</b>C", long_name = "<b>Flask</b>CMS",
-                 category_icon_classes = {'User': 'fa fa-users', 'Author': 'fa fa-address-card'})
+admin = AdminLte(app, name = 'FlaskCMS', skin = 'green',
+                 short_name = "<b>F</b>C", long_name = "<b>Flask</b>CMS")
 
 admin.add_view(RoleView(Role, db.session, name = "Roles", category = 'Users', menu_icon_value = 'fa-server', menu_icon_type = 'fa'))
 admin.add_view(UserView(User, db.session, name = "Users", category = 'Users', menu_icon_value = 'fa-users', menu_icon_type = 'fa'))

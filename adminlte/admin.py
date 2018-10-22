@@ -12,7 +12,7 @@ class AdminLte(Admin):
 
     def __init__(self, app = None, name = None, url = None, subdomain = None, index_view = None,
                  translations_path = None, endpoint = None, static_url_path = None, base_template = None,
-                 template_mode = None, category_icon_classes = None, short_name = None, long_name = None,
+                 category_icon_classes = None, short_name = None, long_name = None,
                  skin = 'blue'):
         """
             Constructor.
@@ -46,7 +46,7 @@ class AdminLte(Admin):
                 Example: {'Favorites': 'glyphicon glyphicon-star'}
         """
         super(AdminLte, self).__init__(app, name, url, subdomain, index_view, translations_path, endpoint,
-                                       static_url_path, base_template, template_mode, category_icon_classes)
+                                       static_url_path, base_template, 'bootstrap3', category_icon_classes)
         self.short_name = short_name or name
         self.long_name = long_name or name
         self.skin = skin
