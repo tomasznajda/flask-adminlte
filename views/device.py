@@ -1,7 +1,7 @@
-from .abc import BaseModelView
+from adminlte.views import BaseAdminView
 
 
-class DeviceView(BaseModelView):
+class DeviceView(BaseAdminView):
     column_editable_list = ['name', 'type', 'rooted']
     column_searchable_list = ['name', 'type', 'rooted']
     column_exclude_list = None
