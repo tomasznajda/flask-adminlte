@@ -27,6 +27,65 @@ http://adminlte.najdaapps.com/admin/ \
     - categories
     - model views
     - links
+    
+### Usage
+Copy directories `adminlte`, `static`, `templates` to your project.
+
+#### Basic configuration
+```python
+from flask import Flask, url_for
+from flask_security import Security
+from flask_admin import helpers as admin_helpers
+from adminlte.admin import AdminLte, admins_store
+
+app = Flask(__name__)
+
+security = Security(app, admins_store)
+admin = AdminLte(app, skin = 'green', name = 'FlaskCMS', short_name = "<b>F</b>C", long_name = "<b>Flask</b>CMS")
+
+@security.context_processor
+def security_context_processor():
+    return dict(
+        admin_base_template = admin.base_template,
+        admin_view = admin.index_view,
+        h = admin_helpers,
+        get_url = url_for
+    )
+```
+
+#### Add view for your model
+```python
+class DeviceView(BaseAdminView):
+    column_editable_list = ['name', 'type', 'rooted']
+    column_searchable_list = ['name', 'type', 'rooted']
+    column_exclude_list = None
+    column_details_exclude_list = None
+    column_filters = ['name', 'type', 'rooted']
+    can_export = True
+    can_view_details = False
+    can_create = True
+    can_edit = True
+    can_delete = True
+    edit_modal = True
+    create_modal = True
+    details_modal = False
+    
+
+admin.add_view(DeviceView(Device, db.session, name = "Devices", menu_icon_value = 'fa-laptop'))
+```
+
+#### Add link
+```python
+admin.add_link(FaLink(name='Website', url='http://tomasznajda.com', icon_value = 'fa-globe', target = "_blank"))
+```
+
+#### Add category
+```python
+admin.add_view(DeviceView(Device, db.session, name = "Devices", category='Author', menu_icon_value = 'fa-laptop'))
+admin.add_link(FaLink(name='Website', category='Author', url='http://tomasznajda.com', icon_value = 'fa-globe', target = "_blank"))
+admin.set_category_icon(name='Author', icon_type = 'fa', icon_value = 'fa-address-card')
+
+```
 
 ### Configuration
 
